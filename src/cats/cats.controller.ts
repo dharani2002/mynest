@@ -1,7 +1,8 @@
-import { Controller, Get,Req, Res, Post,Body, Param, HttpCode } from "@nestjs/common";
+import { Controller, Get,Req, Res, Post,Body, Param, HttpCode, HttpException, HttpStatus } from "@nestjs/common";
 import { CreateCatDto } from "./dto/create-cat.dto";
 import { CatsService } from "./cats.service";
 import { Cat } from "./cats.service";
+import { ForbiddenException } from "./exceptions/forbidden.exception";
 
 @Controller('cats')//decorator to define basic controller, with path preficx cats
 export class CatsController{
@@ -13,7 +14,18 @@ export class CatsController{
         //Req decorator allows input from users
         //we also get @Req, @Next, @Param, @Body, @Session, @Query, @Headers, @Ip, @HostParam
         //response.status(200).send('this acton return all cats')
-        return this.catsService.findAll()
+        try {
+            return this.catsService.findAll()
+        } catch (error) {
+            // throw new HttpException({
+            //     status:HttpStatus.FORBIDDEN,
+            //     error:"this information is forbidden",
+            // },HttpStatus.FORBIDDEN,{
+            //     cause:error
+            // }
+            // );
+            throw new ForbiddenException();
+        }
     }
     //@Get(), @Post(), @Put(), @Delete(), @Patch(), @Options(), and @Head().
     // @All() defines an endpoint that handles all of them.
@@ -26,6 +38,7 @@ export class CatsController{
     findOne(@Param('id')id:string){
         return `this action return a #${id} cat`
     }
+    
 }
 //Param is used to collect /cats/:name
 //Query /cats?age=2&breed=Persian
