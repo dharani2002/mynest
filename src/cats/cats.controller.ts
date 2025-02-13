@@ -1,9 +1,9 @@
 import { Controller, Get,Req, Res, Post,Body, Param, HttpCode, HttpException, HttpStatus, ParseIntPipe, UsePipes, DefaultValuePipe } from "@nestjs/common";
 import { CreateCatDto, createCatSchema } from "./dto/create-cat.dto";
 import { CatsService } from "./cats.service";
-import { Cat } from "./cats.service";
 import { ForbiddenException } from "./exceptions/forbidden.exception";
 import { ZodValidationPipe } from "./pipes/validation.pipe";
+import { Roles } from "./decorator/roles.decorator";
 
 @Controller('cats')//decorator to define basic controller, with path preficx cats
 export class CatsController{
@@ -32,6 +32,7 @@ export class CatsController{
     // @All() defines an endpoint that handles all of them.
     //Post return 201 rest all return 200 status code
     @Post()
+    @Roles(['admin'])
     @UsePipes(new ZodValidationPipe(createCatSchema))
     async create(@Body() createCatDto:CreateCatDto){
         this.catsService.create(createCatDto)
