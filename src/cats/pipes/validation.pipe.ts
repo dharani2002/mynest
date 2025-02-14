@@ -14,6 +14,7 @@ export class ZodValidationPipe implements PipeTransform{
     transform(value: any, metadata: ArgumentMetadata) {
         try {
            const parsedValue=this.schema.parse(value)
+           console.log("pipe:validating...")
            return parsedValue 
         } catch (error) {
             throw new BadRequestException("Validation failed")

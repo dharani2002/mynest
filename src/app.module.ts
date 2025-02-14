@@ -14,6 +14,7 @@ export class AppModule implements NestModule{
   configure(consumer:MiddlewareConsumer){
     consumer
     .apply(LoggerMiddleware)
-    .forRoutes({path:'cats',method:RequestMethod.GET})
+    .forRoutes('cats')
   }
 }
+//forRoutes({path:"cats",method:RequestMethod.POST})
