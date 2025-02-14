@@ -8,6 +8,8 @@ import { LoggingInterceptor } from "./intercetpors/logging.interceptor";
 import { RolesGuard } from "./auth/role.guard";
 import { TransformInterceptor } from "./intercetpors/transform.intercetpor";
 import { TimeoutInterceptor } from "./intercetpors/timeout.interceptor";
+import { User, UserEntity } from "./decorator/user.decorator";
+import { userSchema } from "./dto/user.dto";
 
 
 @Controller('cats')
@@ -51,7 +53,11 @@ export class CatsController{
     findOne(@Param('id',new DefaultValuePipe(0),ParseIntPipe)id:number){
         return `this action return a #${id} cat`
     }
-    
+    @Get("owner")
+    @UsePipes(new ZodValidationPipe(userSchema))
+    async findOwner(@User() user:UserEntity){
+        return user
+    }
 }
 //Param is used to collect /cats/:name
 //Query /cats?age=2&breed=Persian
