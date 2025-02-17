@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './logger.middleware';
+import { MongooseModule } from '@nestjs/mongoose';
 
 //root module of the application
 @Module({
-  imports: [CatsModule],
+  imports: [CatsModule,MongooseModule.forRoot('mongodb+srv://dharani:root@cluster0.utegh.mongodb.net/cats')],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -16,7 +16,7 @@ import { userSchema } from "./dto/user.dto";
 //decorator to define basic controller, with path preficx cats
 @UseInterceptors(LoggingInterceptor)
 export class CatsController{
-    constructor(private catsService:CatsService){}
+    constructor(private catsService:CatsService){}//constructor injection
     @Get()//create a handler for get request
     //we can pass prefix to send reuqest to a specific path '/cats'
     @UseInterceptors(TransformInterceptor)
@@ -64,4 +64,11 @@ export class CatsController{
 
 
 // flow
-//middleware->guard->interceptor/pipe
+//middleware->guard->interceptor->pipe
+
+/*DI in nestjs
+* ex. useGuards(RoleGuards) the initiation of instances is handl;ed by IoC container in our case Nest js runtime
+* when we created catsService we made sure it was wrapped around and injectable controller that means it can be managed by nestIoC container
+* in catsController decalres a dependency on the CatsService token with constructor injection
+* in app.module.ts, we associate the token CatsService with the class CatsService
+*/
